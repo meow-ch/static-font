@@ -1,6 +1,6 @@
 {
   "name": "static-font",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "CLI tool to easily manage and self-host web fonts in your projects",
   "type": "module",
   "bin": {

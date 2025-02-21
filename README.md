@@ -49,6 +49,7 @@ This will prompt users to install the specified fonts when they install your pac
 
 - `Luciole-Regular.woff2` - A typeface specifically designed for visually impaired people
 - `Luciole-Bold.woff2`
+- `AccessibleDfA-VF.woff2` - Basic Latin, Latin-1 Supplement, Latin Extended-A, Latin Extended-B
 
 ## Contributing New Fonts
 
