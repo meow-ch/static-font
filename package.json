@@ -1,0 +1,27 @@
+{
+  "name": "static-font",
+  "version": "1.0.1",
+  "description": "CLI tool to easily manage and self-host web fonts in your projects",
+  "type": "module",
+  "bin": {
+    "static-font": "./bin/cli.js"
+  },
+  "files": [
+    "bin/",
+    "assets/font/",
+    "assets/license/"
+  ],
+  "keywords": [
+    "fonts",
+    "web-fonts",
+    "self-hosted",
+    "cli",
+    "font-face",
+    "css"
+  ],
+  "author": "Guillermo Pages",
+  "license": "MIT",
+  "dependencies": {
+    "inquirer": "^12.4.2"
+  }
+}
