@@ -30,71 +30,17 @@ This will:
 
 ## For Package Authors
 
-If you want to ensure specific fonts are available in projects using your package, create a `postinstall.js` script:
-
-If you want to ensure specific fonts are available in projects using your package, create a `postinstall.js` script. Use the appropriate version based on your package's module system:
-
-### For ES Modules (`"type": "module"` in package.json)
-
-```js
-// postinstall.js
-import { execSync } from 'child_process';
-
-// Only run if this package is being installed as a dependency
-if (process.env.npm_config_global !== 'true' && process.env.INIT_CWD !== process.cwd()) {
-  try {
-    console.log('Installing required fonts...');
-    execSync('npx static-font FontName1 FontName2', { 
-      stdio: 'inherit',
-      cwd: process.env.INIT_CWD || process.cwd()
-    });
-  } catch (error) {
-    console.error('Font installation failed:', error);
-    process.exit(1);
-  }
-}
-```
-
-### For CommonJS (no "type" field or `"type": "commonjs"` in package.json)
-
-```js
-// postinstall.js
-const { execSync } = require('child_process');
-
-// Only run if this package is being installed as a dependency
-if (process.env.npm_config_global !== 'true' && process.env.INIT_CWD !== process.cwd()) {
-  try {
-    console.log('Installing required fonts...');
-    execSync('npx static-font FontName1 FontName2', { 
-      stdio: 'inherit',
-      cwd: process.env.INIT_CWD || process.cwd()
-    });
-  } catch (error) {
-    console.error('Font installation failed:', error);
-    process.exit(1);
-  }
-}
-```
-
-Then in your `package.json`:
+If you want to ensure specific fonts are available in projects using your package in your `package.json` add:
 
 ```json
 {
   "scripts": {
-    "postinstall": "node postinstall.js"
+    "postinstall": "npx static-font Luciole-Regular AccessibleDfA-VF"
   },
-  "files": [
-    "postinstall.js",
-    // your other files...
-  ]
 }
 ```
 
-This ensures:
-- The script only runs when your package is installed as a dependency
-- Runs in the correct directory (the end user's project)
-- Provides better error handling and feedback
-- Works with both module systems
+This puts the fonts in the correct directory (the end user's project), adapt it to the fonts you want, from the available fonts.
 
 ## Available Fonts
 
