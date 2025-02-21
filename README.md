@@ -40,12 +40,19 @@ If you want to ensure specific fonts are available in projects using your packag
 // postinstall.js
 import { execSync } from 'child_process';
 
-if (process.env.INIT_CWD === process.cwd()) {
-  // Skip running during development
-  process.exit(0);
+// Only run if this package is being installed as a dependency
+if (process.env.npm_config_global !== 'true' && process.env.INIT_CWD !== process.cwd()) {
+  try {
+    console.log('Installing required fonts...');
+    execSync('npx static-font FontName1 FontName2', { 
+      stdio: 'inherit',
+      cwd: process.env.INIT_CWD || process.cwd()
+    });
+  } catch (error) {
+    console.error('Font installation failed:', error);
+    process.exit(1);
+  }
 }
-
-execSync('npx static-font FontName1 FontName2', { stdio: 'inherit' });
 ```
 
 ### For CommonJS (no "type" field or `"type": "commonjs"` in package.json)
@@ -54,12 +61,19 @@ execSync('npx static-font FontName1 FontName2', { stdio: 'inherit' });
 // postinstall.js
 const { execSync } = require('child_process');
 
-if (process.env.INIT_CWD === process.cwd()) {
-  // Skip running during development
-  process.exit(0);
+// Only run if this package is being installed as a dependency
+if (process.env.npm_config_global !== 'true' && process.env.INIT_CWD !== process.cwd()) {
+  try {
+    console.log('Installing required fonts...');
+    execSync('npx static-font FontName1 FontName2', { 
+      stdio: 'inherit',
+      cwd: process.env.INIT_CWD || process.cwd()
+    });
+  } catch (error) {
+    console.error('Font installation failed:', error);
+    process.exit(1);
+  }
 }
-
-execSync('npx static-font FontName1 FontName2', { stdio: 'inherit' });
 ```
 
 Then in your `package.json`:
@@ -78,8 +92,9 @@ Then in your `package.json`:
 
 This ensures:
 - The script only runs when your package is installed as a dependency
-- Doesn't run during your package development (`npm install`)
-- Runs when end users install your package
+- Runs in the correct directory (the end user's project)
+- Provides better error handling and feedback
+- Works with both module systems
 
 ## Available Fonts
 
