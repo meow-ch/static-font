@@ -32,22 +32,27 @@ This will:
 
 If you want to ensure specific fonts are available in projects using your package, create a `postinstall.js` script:
 
+If you want to ensure specific fonts are available in projects using your package, create a `postinstall.js` script. Use the appropriate version based on your package's module system:
+
+### For ES Modules (`"type": "module"` in package.json)
+
 ```js
 // postinstall.js
+import { execSync } from 'child_process';
+
 if (process.env.INIT_CWD === process.cwd()) {
   // Skip running during development
   process.exit(0);
 }
 
-const { execSync } = require('child_process');
 execSync('npx static-font FontName1 FontName2', { stdio: 'inherit' });
 ```
 
-or ES module, if the package uses `"type": "module"`
+### For CommonJS (no "type" field or `"type": "commonjs"` in package.json)
 
 ```js
 // postinstall.js
-import { execSync } from 'child_process';
+const { execSync } = require('child_process');
 
 if (process.env.INIT_CWD === process.cwd()) {
   // Skip running during development
