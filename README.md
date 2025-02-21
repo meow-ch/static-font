@@ -30,20 +30,51 @@ This will:
 
 ## For Package Authors
 
-If you want to ensure specific fonts are available in projects using your package, you can integrate `static-font` in your `package.json`:
+If you want to ensure specific fonts are available in projects using your package, create a `postinstall.js` script:
+
+```js
+// postinstall.js
+if (process.env.INIT_CWD === process.cwd()) {
+  // Skip running during development
+  process.exit(0);
+}
+
+const { execSync } = require('child_process');
+execSync('npx static-font FontName1 FontName2', { stdio: 'inherit' });
+```
+
+or ES module, if the package uses `"type": "module"`
+
+```js
+// postinstall.js
+import { execSync } from 'child_process';
+
+if (process.env.INIT_CWD === process.cwd()) {
+  // Skip running during development
+  process.exit(0);
+}
+
+execSync('npx static-font FontName1 FontName2', { stdio: 'inherit' });
+```
+
+Then in your `package.json`:
 
 ```json
 {
-  "dependencies": {
-    "static-font": "^1.0.0"
-  },
   "scripts": {
-    "postinstall": "npx static-font FontName1 FontName2"
-  }
+    "postinstall": "node postinstall.js"
+  },
+  "files": [
+    "postinstall.js",
+    // your other files...
+  ]
 }
 ```
 
-This will prompt users to install the specified fonts when they install your package.
+This ensures:
+- The script only runs when your package is installed as a dependency
+- Doesn't run during your package development (`npm install`)
+- Runs when end users install your package
 
 ## Available Fonts
 
